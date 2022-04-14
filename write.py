@@ -12,7 +12,44 @@ You'll edit this file in Part 4.
 """
 import csv
 import json
+from helpers import datetime_to_str
 
+def csv_data_structure(approach):
+    '''
+    The approach parameter is a CloseApproach object. This function takes in a CloseApproach object
+    and returns a dictionary with the required parameters in the required structure for writing 
+    to csv. This function is called within the write_to_csv function.
+    '''
+    approach_dict = {'datetime_utc'         : datetime_to_str(approach.time),
+                     'distance_au'          : approach.distance,
+                     'velocity_km_s'        : approach.velocity,
+                     'designation'          : approach._designation,
+                     'name'                 : approach.neo.name,
+                     'diameter_km'          : approach.neo.diameter,
+                     'potentially_hazardous': approach.neo.hazardous}
+    if approach_dict['name'] is None:
+        approach_dict['name'] = ''
+    return approach_dict
+
+def json_data_structure(approach):
+    '''
+    The approach parameter is a CloseApproach object. This function takes in a CloseApproach object
+    and returns a dictionary with the required parameters in the required structure for writing 
+    to json. This function is called within the write_to_json function.
+    '''
+    approach_dict = {'datetime_utc' : datetime_to_str(approach.time), #CHANGE TIME TO STR LATER
+                     'distance_au'  : approach.distance,
+                     'velocity_km_s': approach.velocity,
+                     'neo':{
+                        'designation'          : approach._designation,
+                        'name'                 : approach.neo.name,
+                        'diameter_km'          : approach.neo.diameter,
+                        'potentially_hazardous': approach.neo.hazardous
+                            }
+                     }
+    if approach_dict['neo']['name'] is None:
+        approach_dict['neo']['name'] = ''
+    return approach_dict
 
 def write_to_csv(results, filename):
     """Write an iterable of `CloseApproach` objects to a CSV file.
@@ -25,8 +62,14 @@ def write_to_csv(results, filename):
     :param filename: A Path-like object pointing to where the data should be saved.
     """
     fieldnames = ('datetime_utc', 'distance_au', 'velocity_km_s', 'designation', 'name', 'diameter_km', 'potentially_hazardous')
-    # TODO: Write the results to a CSV file, following the specification in the instructions.
-
+    list_approach_dict = [csv_data_structure(approach) for approach in list(results)]
+    with open(filename, 'w', newline='') as f:
+        #use DictWrite to also include the header row
+        writer = csv.DictWriter(f, fieldnames = list_approach_dict[0].keys()) 
+        writer.writeheader() #write the header line
+        if list_approach_dict:
+            for elem in list_approach_dict:
+                writer.writerow(elem)
 
 def write_to_json(results, filename):
     """Write an iterable of `CloseApproach` objects to a JSON file.
@@ -39,4 +82,6 @@ def write_to_json(results, filename):
     :param results: An iterable of `CloseApproach` objects.
     :param filename: A Path-like object pointing to where the data should be saved.
     """
-    # TODO: Write the results to a JSON file, following the specification in the instructions.
+    list_approach_dict = [json_data_structure(approach) for approach in list(results)]
+    with open(filename, 'w') as f:
+        json.dump(list_approach_dict, f, indent=3)

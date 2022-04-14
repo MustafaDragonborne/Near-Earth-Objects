@@ -21,7 +21,6 @@ import itertools
 
 class UnsupportedCriterionError(NotImplementedError):
     """A filter criterion is unsupported."""
-#     pass
 
 
 class AttributeFilter:
@@ -131,7 +130,6 @@ def create_filters(date=None, start_date=None, end_date=None,
     :param hazardous: Whether the NEO of a matching `CloseApproach` is potentially hazardous.
     :return: A collection of filters for use with `query`.
     """
-    # TODO: Decide how you will represent your filters.
     filters_collection = []
     if date:
         filters_collection.append(DateFilter(operator.eq, date))
@@ -150,9 +148,9 @@ def create_filters(date=None, start_date=None, end_date=None,
     if diameter_min:
         filters_collection.append(DiameterFilter(operator.ge, diameter_min))
     if diameter_max:
-        filters_collection.append(VelocityFilter(operator.le, diameter_max))
+        filters_collection.append(DiameterFilter(operator.le, diameter_max))
     if hazardous is not None:
-        filters_collection.append(HazardousFilter(operator.eq, hazardous))
+        filters_collection.append(HazardousFilter(operator.eq, bool(hazardous)))
     
     return filters_collection
 
@@ -166,8 +164,7 @@ def limit(iterator, n=None):
     :param n: The maximum number of values to produce.
     :yield: The first (at most) `n` values from the iterator.
     """
-    # TODO: Produce at most `n` values from the given iterator.
-    if n is not None:
+    if n is not None and n!=0:
         return itertools.islice(iterator, n)
-    elif n is None or n==0:
+    else:
         return iterator

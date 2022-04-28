@@ -18,12 +18,13 @@ from helpers import datetime_to_str
 
 
 def csv_data_structure(approach):
-    '''
+    """Return dictionary with required format containing CloseApproach data.
+
     The approach parameter is a CloseApproach object. This function takes in a
     CloseApproach object and returns a dictionary with the required parameters
     in the required structure for writing to csv. This function is called
     within the write_to_csv function.
-    '''
+    """
     approach_dict = {'datetime_utc': datetime_to_str(approach.time),
                      'distance_au': approach.distance,
                      'velocity_km_s': approach.velocity,
@@ -37,12 +38,13 @@ def csv_data_structure(approach):
 
 
 def json_data_structure(approach):
-    '''
+    """Return dictionary with required format containing CloseApproach data.
+
     The approach parameter is a CloseApproach object. This function takes in a
     CloseApproach object and returns a dictionary with the required parameters
     in the required structure for writing to json. This function is called
     within the write_to_json function.
-    '''
+    """
     approach_dict = {'datetime_utc': datetime_to_str(approach.time),
                      'distance_au': approach.distance,
                      'velocity_km_s': approach.velocity,
@@ -95,7 +97,6 @@ def write_to_json(results, filename):
     :param filename: A Path-like object pointing to where the data should be
     saved.
     """
-
     list_approach_dict = [json_data_structure(approach) for approach in
                           list(results)]
     with open(filename, 'w') as f:

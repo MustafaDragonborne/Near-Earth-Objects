@@ -41,9 +41,10 @@ class AttributeFilter:
     Concrete subclasses can override the `get` classmethod to provide custom
     behavior to fetch a desired attribute from the given `CloseApproach`.
     """
+
     def __init__(self, op, value):
-        """Construct a new `AttributeFilter` from an binary predicate and a
-        reference value.
+        """Construct a new `AttributeFilter` from an binary predicate and a \
+            reference value.
 
         The reference value will be supplied as the second (right-hand side)
         argument to the operator function. For example, an `AttributeFilter`
@@ -74,37 +75,61 @@ class AttributeFilter:
         raise UnsupportedCriterionError
 
     def __repr__(self):
+        """Print the string representation of object."""
         return f"{self.__class__.__name__}(op=operator.{self.op.__name__}, \
                 value={self.value})"
 
 
 class DateFilter(AttributeFilter):
+    """Subclass of the AttributeFilter base class to filter CloseApproach \
+        objects by date."""
+
     @classmethod
     def get(cls, approach):
+        """Return approach.time value of a CloseApproach object as a \
+            datetime.datetime object."""
         return approach.time.date()
 
 
 class DistanceFilter(AttributeFilter):
+    """Subclass of the AttributeFilter base class to filter CloseApproach \
+        objects by distance."""
+
     @classmethod
     def get(cls, approach):
+        """Return approach.distance value of a CloseApproach object."""
         return approach.distance
 
 
 class VelocityFilter(AttributeFilter):
+    """Subclass of the AttributeFilter base class to filter CloseApproach \
+        objects by velocity."""
+
     @classmethod
     def get(cls, approach):
+        """Return approach.velocity value of a CloseApproach object."""
         return approach.velocity
 
 
 class DiameterFilter(AttributeFilter):
+    """Subclass of the AttributeFilter base class to filter CloseApproach \
+        objects by diameter."""
+
     @classmethod
     def get(cls, approach):
+        """Return diameter of NEO object associated with a CloseApproach \
+            object."""
         return approach.neo.diameter
 
 
 class HazardousFilter(AttributeFilter):
+    """Subclass of the AttributeFilter base class to filter CloseApproach \
+        objects by hazard status."""
+
     @classmethod
     def get(cls, approach):
+        """Return hazard status of NEO object associated with a CloseApproach \
+            object."""
         return approach.neo.hazardous
 
 

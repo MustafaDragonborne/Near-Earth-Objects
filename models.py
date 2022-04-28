@@ -61,7 +61,7 @@ class NearEarthObject:
     @property
     def fullname(self):
         """Return a representation of the full name of this NEO."""
-        if not self.name == None:
+        if self.name is not None:
             return f'{self.designation} ({self.name})'
         else:
             return f'{self.designation}'
@@ -76,8 +76,8 @@ class NearEarthObject:
                     f'km and is not potentially hazardous.')
 
     def __repr__(self):
-        """Return `repr(self)`, a computer-readable string representation of
-        this object."""
+        """Return `repr(self)`, a computer-readable string representation of \
+            this object."""
         return (f"NearEarthObject(designation={self.designation!r}, "
                 f"name={self.name!r}, diameter={self.diameter:.3f}, "
                 f"hazardous={self.hazardous!r})")
@@ -96,6 +96,7 @@ class CloseApproach:
     private attribute, but the referenced NEO is eventually replaced in the
     `NEODatabase` constructor.
     """
+
     def __init__(self, cad_sample, neo=None):
         """Create a new `CloseApproach`.
 
@@ -112,8 +113,8 @@ class CloseApproach:
 
     @property
     def time_str(self):
-        """Return a formatted representation of this `CloseApproach`'s
-        approach time.
+        """Return a formatted representation of this `CloseApproach`'s \
+            approach time.
 
         The value in `self.time` should be a Python `datetime` object. While a
         `datetime` object has a string representation, the default
@@ -133,8 +134,8 @@ class CloseApproach:
                 f"{self.velocity} km/s.")
 
     def __repr__(self):
-        """Return `repr(self)`, a computer-readable string representation of
-        this object."""
+        """Return `repr(self)`, a computer-readable string representation of \
+            this object."""
         return (f"CloseApproach(time={self.time_str!r}, "
                 f"distance={self.distance:.2f}, "
                 f"velocity={self.velocity:.2f}, neo={self.neo!r})")
